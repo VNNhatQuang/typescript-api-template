@@ -21,7 +21,7 @@ const LoginRequest = (body: Request): any => {
             .required()
     });
 
-    const { value, error } = schema.validate(body); // Sử dụng body.body để lấy dữ liệu thực tế từ request body
+    const { value, error } = schema.validate(body);
 
     if (error) {
         return {

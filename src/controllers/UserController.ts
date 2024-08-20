@@ -10,7 +10,7 @@ class UserController {
      * Thực hiện đăng nhập user
      * @param req 
      * @param res 
-     * @returns Response
+     * @returns 
      */
     public async login(req: Request, res: Response): Promise<Response> {
         try {
@@ -29,7 +29,7 @@ class UserController {
             const user = await UserService.login(userName, password);
 
             return res.status(200).json({
-                success: true,
+                success: user.token ? true : false,
                 message: "Login",
                 data: user,
             });
@@ -44,7 +44,7 @@ class UserController {
      * Trả về danh sách toàn bộ user
      * @param req 
      * @param res 
-     * @returns Response
+     * @returns 
      */
     public async showAll(req: Request, res: Response): Promise<Response> {
         try {

@@ -1,6 +1,6 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../../config/database';
-import { UserInterface, UserCreationInterface } from '../../interfaces/models/UserInterface';
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database';
+import { UserInterface, UserCreationInterface } from '../interfaces/models/UserInterface';
 
 
 class User extends Model<UserInterface, UserCreationInterface> implements UserInterface {

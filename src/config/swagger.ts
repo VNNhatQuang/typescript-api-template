@@ -29,7 +29,7 @@ const options: Options = {
             },
         ],
     },
-    // Đường dẫn đến các file chứa JSDoc comments (đứng ở tệp index.js)
+    // Path to files contain JSDoc comments
     apis: ['./src/routes/*.ts'],
 };
 

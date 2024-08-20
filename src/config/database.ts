@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 
@@ -13,17 +14,6 @@ const sequelize = new Sequelize(
         logging: false, // Turn off logging
     }
 );
-
-
-// Test connection to DB
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log("Connection to Database successfully.");
-    } catch (error) {
-        console.error("Unable to connect to the database:", error);
-    }
-})()
 
 
 

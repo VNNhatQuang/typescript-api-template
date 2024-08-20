@@ -1,7 +1,7 @@
 {
-    "name": "api_kingbet365",
+    "name": "typescript_api",
     "version": "1.0.0",
-    "description": "apis for kingbets365",
+    "description": "APIs TypeScript Template",
     "main": "index.js",
     "scripts": {
         "dev": "nodemon --watch src --exec ts-node src/index.ts",
@@ -10,10 +10,13 @@
         "migrate": "npx sequelize-cli db:migrate",
         "seeder": "npx sequelize-cli db:seed:all"
     },
+    "author": "QuangVNN",
+    "license": "ISC",
     "dependencies": {
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
+        "helmet": "^7.1.0",
         "joi": "^17.13.3",
         "jsonwebtoken": "^9.0.2",
         "mysql2": "^3.11.0",
@@ -26,9 +29,11 @@
         "@types/express": "^4.17.21",
         "@types/joi": "^17.2.3",
         "@types/jsonwebtoken": "^9.0.6",
+        "@types/morgan": "^1.9.9",
         "@types/sequelize": "^4.28.20",
         "@types/swagger-jsdoc": "^6.0.4",
         "@types/swagger-ui-express": "^4.1.6",
+        "morgan": "^1.10.0",
         "nodemon": "^3.1.4",
         "sequelize-cli": "^6.6.2",
         "ts-node": "^10.9.2",

@@ -1,7 +1,6 @@
-import express, { Router, Request, Response, NextFunction } from 'express';
-import UserController from '../app/controllers/UserController';
-import VerifyToken from '../app/middleware/VerifyToken';
-
+import express, { Router } from 'express';
+import UserController from '../controllers/UserController';
+import VerifyToken from '../middleware/VerifyToken';
 
 const user: Router = express.Router();
 
@@ -52,7 +51,7 @@ user.post('/login', UserController.login);
 
 /** Lấy ra danh sách toàn bộ user
  * @swagger
- * /api/user:
+ * /api/user/all:
  *   get:
  *     summary: Get a list of users
  *     description: Retrieve a list of all users in the system.
@@ -85,7 +84,7 @@ user.post('/login', UserController.login);
  *                     format: date-time
  *                     description: When the user was last updated
  */
-user.get('/', VerifyToken, UserController.showAll);
+user.get('/all', VerifyToken, UserController.showAll);
 
 
 
