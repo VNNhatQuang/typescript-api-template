@@ -45,8 +45,45 @@ class UserService {
         }
     }
 
+    /**
+     * Hàm lấy thông tin user bởi user name
+     * @param userName 
+     * @returns 
+     */
+    public async get(userName: string): Promise<any | null> {
+        try {
 
+            const user = await User.findOne({
+                where: { userName: userName },
+                attributes: { exclude: ['password'] }
+            })
 
+            return user;
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    /**
+     * Hàm lấy danh sách toàn bộ user
+     * @returns 
+     */
+    public async getAll(): Promise<any | null> {
+        try {
+
+            const users = await User.findAll({
+                attributes: { exclude: ['password'] }
+            });
+
+            return users;
+
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
 
 
 }

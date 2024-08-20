@@ -47,7 +47,7 @@ const user: Router = express.Router();
  *               items:
  *                 type: string
  */
-user.post('/login', UserController.login);
+user.post("/login", UserController.login);
 
 /** Lấy ra danh sách toàn bộ user
  * @swagger
@@ -84,7 +84,54 @@ user.post('/login', UserController.login);
  *                     format: date-time
  *                     description: When the user was last updated
  */
-user.get('/all', VerifyToken, UserController.showAll);
+user.get("/all", VerifyToken, UserController.showAll);
+
+/** Lấy thông tin user dựa vào userName
+ * @swagger
+ * /api/user/{userName}:
+ *   get:
+ *     summary: Get user infomation by user name
+ *     description: Get user infomation by user name
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userName
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user name.
+ *         example: QuangVNN
+ *     responses:
+ *       200:
+ *         description: Get infomation of user by userName
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The user's ID
+ *                   name:
+ *                     type: string
+ *                     description: The user's name
+ *                   email:
+ *                     type: string
+ *                     description: The user's email
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: When the user was created
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: When the user was last updated
+ */
+user.get("/:userName", VerifyToken, UserController.show);
+
+
 
 
 
