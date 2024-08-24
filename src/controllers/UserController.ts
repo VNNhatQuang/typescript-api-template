@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import UserService from "../services/UserService";
-import LoginRequest from "../requests/LoginRequest";
 
 
 class UserController {
@@ -14,16 +13,6 @@ class UserController {
     public async login(req: Request, res: Response): Promise<Response> {
         try {
             const { userName, password } = req.body;
-
-            const validate = LoginRequest(req.body);
-
-            if (!validate.passed) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Login user",
-                    data: validate.data
-                });
-            }
 
             const user = await UserService.login(userName, password);
 

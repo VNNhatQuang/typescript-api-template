@@ -44,7 +44,7 @@ The project follows this structure:
     │   ├── interfaces              # Self-defined data types
     │   ├── middleware              # Custom middleware functions
     │   ├── models                  # Sequelize models
-    │   ├── requests                # Validate requests
+    │   ├── validators              # Schema Joi to validate request
     │   ├── routes                  # Route definitions
     │   ├── services                # Business logic
     │   ├── app.ts                  

@@ -1,6 +1,8 @@
 import express, { Router } from 'express';
 import UserController from '../controllers/UserController';
 import VerifyToken from '../middleware/VerifyToken';
+import Validate from '../middleware/Validate';
+import LoginValidator from '../validators/LoginValidator';
 
 const user: Router = express.Router();
 
@@ -47,7 +49,7 @@ const user: Router = express.Router();
  *               items:
  *                 type: string
  */
-user.post("/login", UserController.login);
+user.post("/login", Validate(LoginValidator), UserController.login);
 
 /** Lấy ra danh sách toàn bộ user
  * @swagger
