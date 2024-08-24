@@ -52,11 +52,11 @@ The project follows this structure:
     ├── types                       # TypeScript types
     │   └── express.d.ts            
     ├── .env.example                
-    ├── .sequelizerc                
+    ├── .sequelizerc                # Sequelize configuration
     ├── package-lock.json           
     ├── package.json                
     ├── README.md                   
-    └── tsconfig.json               
+    └── tsconfig.json               # TypeScript configuration
 
 
 ## Scripts
