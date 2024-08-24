@@ -3,6 +3,7 @@ import Routes from "./routes";
 import { swaggerUi, specs } from "./config/swagger";
 import sequelize from "./config/database";
 import InitMiddleware from "./middleware";
+import NotFoundHandler from "./middleware/NotFoundHandler";
 
 
 // Common Configuration
@@ -14,6 +15,7 @@ InitMiddleware(app);
 // Routes Configuration
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));  // Route Swagger UI
 Routes(app);
+app.use(NotFoundHandler);
 
 
 // Test connection to DB
