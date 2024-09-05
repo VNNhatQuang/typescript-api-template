@@ -133,6 +133,38 @@ user.get("/all", VerifyToken, UserController.showAll);
  */
 user.get("/:userName", VerifyToken, UserController.show);
 
+/** Quên mật khẩu
+ * @swagger
+ * /api/user/forgot-password:
+ *   post:
+ *     summary: User forgot password
+ *     tags: [User]
+ *     description: API for function user forgot password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Email user
+ *                 default: ""
+ *             required:
+ *               - email
+ *     responses:
+ *       200:
+ *         description: 
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ */
+user.post("/forgot-password", UserController.forgotPassword);
+
 
 
 

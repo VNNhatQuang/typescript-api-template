@@ -1,6 +1,10 @@
+import dotenv from "dotenv";
 import User from "../models/User";
 import jwt from "jsonwebtoken";
+import mailer from "nodemailer";
+import { MailOptions } from "nodemailer/lib/json-transport";
 
+dotenv.config();
 
 class UserService {
 
@@ -10,7 +14,7 @@ class UserService {
      * @param password 
      * @returns 
      */
-    public async login(userName: string, password: string): Promise<any | null> {
+    public async login(userName: string, password: string): Promise<any> {
         try {
 
             const user = await User.findOne({ where: { userName: userName } });
@@ -50,7 +54,7 @@ class UserService {
      * @param userName 
      * @returns 
      */
-    public async get(userName: string): Promise<any | null> {
+    public async get(userName: string): Promise<any> {
         try {
 
             const user = await User.findOne({
@@ -67,10 +71,30 @@ class UserService {
     }
 
     /**
+     * Hàm lấy thông tin user bởi email
+     * @param email 
+     * @returns 
+     */
+    public async getUserByEmail(email: string): Promise<any> {
+        try {
+
+            const user = await User.findOne({
+                where: { email: email },
+            })
+
+            return user;
+            
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    /**
      * Hàm lấy danh sách toàn bộ user
      * @returns 
      */
-    public async getAll(): Promise<any | null> {
+    public async getAll(): Promise<any> {
         try {
 
             const users = await User.findAll({
@@ -82,6 +106,56 @@ class UserService {
         } catch (error) {
             console.log(error);
             return [];
+        }
+    }
+
+    /**
+     * Hàm gửi email về cho user
+     * @param email 
+     * @param subject 
+     * @param text 
+     * @param html 
+     * @returns 
+     */
+    public async sendEmail(email: string, subject: string, text: string, html: string | undefined = undefined): Promise<any> {
+        try {
+
+            // Cấu hình transporter
+            const transporter = mailer.createTransport({
+                service: "gmail",
+                // host: "smtp.ethereal.email",
+                // port: 587,
+                // secure: false, // true for port 465, false for other ports
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.EMAIL_PASSWORD,
+                },
+            });
+
+            // Cấu hình thông tin email
+            const mailOptions: MailOptions = {
+                from: process.env.EMAIL,    // Địa chỉ gửi email
+                to: email,  // Địa chỉ nhận email
+                subject: subject,   // Tiêu đề email
+                text: text, // Nội dung email dạng text
+                html: html, // Nội dung email dạng HTML (nếu muốn)
+            };
+
+            // Gửi email
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log('Có lỗi xảy ra:', error);
+                } else {
+                    // console.log(info);
+                }
+            });
+
+
+            return true;
+
+        } catch (error) {
+            console.log(error);
+            return false;
         }
     }
 
