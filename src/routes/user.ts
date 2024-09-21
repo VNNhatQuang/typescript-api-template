@@ -2,7 +2,6 @@ import express, { Router } from 'express';
 import UserController from '../controllers/UserController';
 import VerifyToken from '../middleware/VerifyToken';
 import Validate from '../middleware/Validate';
-import LoginValidator from '../validators/LoginValidator';
 
 const user: Router = express.Router();
 
@@ -14,42 +13,6 @@ const user: Router = express.Router();
  *     description: User Functions
  */
 
-/** Thực hiện đăng nhập user
- * @swagger
- * /api/user/login:
- *   post:
- *     summary: Login user
- *     tags: [User]
- *     description: API for function user login
- *     requestBody:
- *       required: true
- *       content:
- *         application/x-www-form-urlencoded:
- *           schema:
- *             type: object
- *             properties:
- *               userName:
- *                 type: string
- *                 description: The user name
- *                 default: ""
- *               password:
- *                 type: string
- *                 description: The password user
- *                 default: ""
- *             required:
- *               - userName
- *               - password
- *     responses:
- *       200:
- *         description: A list of test items
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: string
- */
-user.post("/login", Validate(LoginValidator), UserController.login);
 
 /** Lấy ra danh sách toàn bộ user
  * @swagger
@@ -132,38 +95,6 @@ user.get("/all", VerifyToken, UserController.showAll);
  *                     description: When the user was last updated
  */
 user.get("/:userName", VerifyToken, UserController.show);
-
-/** Quên mật khẩu
- * @swagger
- * /api/user/forgot-password:
- *   post:
- *     summary: User forgot password
- *     tags: [User]
- *     description: API for function user forgot password
- *     requestBody:
- *       required: true
- *       content:
- *         application/x-www-form-urlencoded:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 description: Email user
- *                 default: ""
- *             required:
- *               - email
- *     responses:
- *       200:
- *         description: 
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: string
- */
-user.post("/forgot-password", UserController.forgotPassword);
 
 
 

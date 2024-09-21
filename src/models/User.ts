@@ -9,6 +9,8 @@ class User extends Model<UserInterface, UserCreationInterface> implements UserIn
     public email!: string;
     public phoneNumber!: string;
     public password!: string;
+    public code!: string;
+    public codeExpiredAt!: Date;
     public createdAt!: Date;
     public updatedAt!: Date;
 }
@@ -40,6 +42,15 @@ User.init(
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        code: {
+            type: DataTypes.STRING,
+            defaultValue: null,
+        },
+        codeExpiredAt: {
+            type: DataTypes.DATE,
+            defaultValue: null,
+            field: 'code_expired_at',
         },
         createdAt: {
             type: DataTypes.DATE,

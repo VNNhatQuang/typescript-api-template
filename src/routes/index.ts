@@ -1,4 +1,5 @@
 import user from "../routes/user";
+import auth from "../routes/auth";
 import { Express } from "express";
 
 
@@ -7,7 +8,10 @@ import { Express } from "express";
  * @param app 
  */
 const Routes = (app: Express): void => {
+
+    app.use('/api/auth', auth);
     app.use('/api/user', user);
+    
 }
 
 
