@@ -37,6 +37,17 @@ module.exports = {
                     type: Sequelize.STRING,
                     allowNull: false,
                 },
+                code: {
+                    type: Sequelize.STRING,
+                    allowNull: true,
+                    defaultValue: null,
+                },
+                codeExpiredAt: {
+                    type: Sequelize.DATE,
+                    allowNull: true,
+                    defaultValue: null,
+                    field: 'code_expired_at'
+                },
                 createdAt: {
                     type: Sequelize.DATE,
                     allowNull: false,

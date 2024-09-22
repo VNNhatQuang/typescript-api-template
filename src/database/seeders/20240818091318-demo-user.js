@@ -17,7 +17,7 @@ module.exports = {
                 user_name: 'QuangVNN',
                 email: 'quangvnn@gmail.com',
                 phone_number: '0912345678',
-                password: '123456789',
+                password: '12345',
                 created_at: new Date(),
                 updated_at: new Date()
             }
