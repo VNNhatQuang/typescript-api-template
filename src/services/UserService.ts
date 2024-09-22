@@ -1,53 +1,10 @@
 import dotenv from "dotenv";
 import User from "../models/User";
-import jwt from "jsonwebtoken";
-import mailer from "nodemailer";
-import { MailOptions } from "nodemailer/lib/json-transport";
-
+import { UserInterface } from "../interfaces/models/UserInterface";
 dotenv.config();
 
+
 class UserService {
-
-    /**
-     * Hàm thực hiện chức năng đăng nhập và tạo token cho user
-     * @param userName 
-     * @param password 
-     * @returns 
-     */
-    public async login(userName: string, password: string): Promise<any> {
-        try {
-
-            const user = await User.findOne({ where: { userName: userName } });
-            if (!user) {
-                return {
-                    loginStatus: false,
-                    message: "The userName is wrong or doesn't exist"
-                };
-            }
-
-            // So sánh password
-            if (!(password === user.password)) {
-                return {
-                    loginStatus: false,
-                    message: "The password isn't correct"
-                };
-            }
-
-            // Tạo token
-            const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
-
-            return {
-                token: token,
-                userName: user.userName,
-                email: user.email,
-                phoneNumber: user.phoneNumber
-            };
-
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    }
 
     /**
      * Hàm lấy thông tin user bởi user name
@@ -83,7 +40,7 @@ class UserService {
             })
 
             return user;
-            
+
         } catch (error) {
             console.log(error);
             return null;
@@ -110,52 +67,28 @@ class UserService {
     }
 
     /**
-     * Hàm gửi email về cho user
-     * @param email 
-     * @param subject 
-     * @param text 
-     * @param html 
+     * Hàm update user
+     * @param values Object các key của bảng user cần update
+     * @param conditions Điều kiện update
      * @returns 
      */
-    public async sendEmail(email: string, subject: string, text: string, html: string | undefined = undefined): Promise<any> {
+    public async update(values: UserInterface, conditions: UserInterface): Promise<any> {
         try {
 
-            // Cấu hình transporter
-            const transporter = mailer.createTransport({
-                service: "gmail",
-                // host: "smtp.ethereal.email",
-                // port: 587,
-                // secure: false, // true for port 465, false for other ports
-                auth: {
-                    user: process.env.EMAIL,
-                    pass: process.env.EMAIL_PASSWORD,
-                },
-            });
-
-            // Cấu hình thông tin email
-            const mailOptions: MailOptions = {
-                from: process.env.EMAIL,    // Địa chỉ gửi email
-                to: email,  // Địa chỉ nhận email
-                subject: subject,   // Tiêu đề email
-                text: text, // Nội dung email dạng text
-                html: html, // Nội dung email dạng HTML (nếu muốn)
-            };
-
-            // Gửi email
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log('Có lỗi xảy ra:', error);
-                } else {
-                    // console.log(info);
+            const rowsUpdated = await User.update(
+                values,
+                {
+                    where: {
+                        ...conditions,
+                    }
                 }
-            });
+            )
 
-
-            return true;
+            return rowsUpdated;
 
         } catch (error) {
             console.log(error);
-            return false;
+            return null
         }
     }
 
