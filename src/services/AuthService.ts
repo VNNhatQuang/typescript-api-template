@@ -127,7 +127,7 @@ class AuthService {
             const now = new Date();
 
             // Check thời gian code đã hết hạn chưa
-            if (codeExpiredAt.getTime() <= now.getTime()) {
+            if (codeExpiredAt.getTime() < now.getTime()) {
                 data.isNotExpired = false;
                 return data;
             }

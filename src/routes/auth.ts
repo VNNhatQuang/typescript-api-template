@@ -1,7 +1,8 @@
 import express, { Router } from 'express';
 import AuthController from '../controllers/AuthController';
 import Validate from '../middleware/Validate';
-import LoginValidator from '../validators/LoginValidator';
+import LoginValidator from '../validators/auth/LoginValidator';
+import { SendCodeValidator, VerifyCodeValidator, ResetPassword } from '../validators/auth/ForgotPasswordValidator';
 
 const auth: Router = express.Router();
 
@@ -80,7 +81,7 @@ auth.post("/login", Validate(LoginValidator), AuthController.login);
  *               items:
  *                 type: string
  */
-auth.post("/forgot-password/send-code", AuthController.forgotPasswordSendCode);
+auth.post("/forgot-password/send-code", Validate(SendCodeValidator), AuthController.forgotPasswordSendCode);
 
 /** Xác nhận code đổi mật khẩu có đúng hay không
  * @swagger
@@ -101,7 +102,7 @@ auth.post("/forgot-password/send-code", AuthController.forgotPasswordSendCode);
  *                 description: Email user
  *                 default: ""
  *               code:
- *                 type: string
+ *                 type: number
  *                 description: The auth code has been sent via user email when the user forgets the password
  *                 default: ""
  *             required:
@@ -117,7 +118,7 @@ auth.post("/forgot-password/send-code", AuthController.forgotPasswordSendCode);
  *               items:
  *                 type: string
  */
-auth.post("/forgot-password/verify-code", AuthController.forgotPasswordVerifyCode);
+auth.post("/forgot-password/verify-code", Validate(VerifyCodeValidator), AuthController.forgotPasswordVerifyCode);
 
 /** Đổi mật khẩu sau khi đã verify code thành công
  * @swagger
@@ -164,7 +165,7 @@ auth.post("/forgot-password/verify-code", AuthController.forgotPasswordVerifyCod
  *               items:
  *                 type: string
  */
-auth.post("/forgot-password/reset-password", AuthController.forgotPasswordResetPassword)
+auth.post("/forgot-password/reset-password", Validate(ResetPassword), AuthController.forgotPasswordResetPassword)
 
 
 
