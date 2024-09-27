@@ -119,6 +119,53 @@ auth.post("/forgot-password/send-code", AuthController.forgotPasswordSendCode);
  */
 auth.post("/forgot-password/verify-code", AuthController.forgotPasswordVerifyCode);
 
+/** Đổi mật khẩu sau khi đã verify code thành công
+ * @swagger
+ * /api/auth/forgot-password/reset-password:
+ *   post:
+ *     summary: Change password when verify code is success
+ *     tags: [Authentication]
+ *     description: API for function change password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Email user
+ *                 default: ""
+ *               code:
+ *                 type: string
+ *                 description: The auth code has been sent via user email in previous step (may be has expired)
+ *                 default: ""
+ *               newPassword:
+ *                 type: string
+ *                 description: New password
+ *                 default: ""
+ *               newPasswordConfirm:
+ *                 type: string
+ *                 description: Confirm new password again
+ *                 default: ""
+ *             required:
+ *               - email
+ *               - code
+ *               - newPassword
+ *               - newPasswordConfirm
+ *     responses:
+ *       200:
+ *         description: 
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ */
+auth.post("/forgot-password/reset-password", AuthController.forgotPasswordResetPassword)
+
 
 
 export default auth;

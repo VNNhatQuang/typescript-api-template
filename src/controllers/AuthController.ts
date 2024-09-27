@@ -55,7 +55,6 @@ class AuthController {
 
             // Update code và codeExpiredAt vào DB
             const userUpdated = await UserService.update({ code, codeExpiredAt }, { id: user.id });
-            console.log(userUpdated);
             if (!userUpdated) {
                 return res.status(500).json({
                     success: false,
@@ -112,10 +111,15 @@ class AuthController {
 
             const verifyCode = await AuthService.verifyCodeForgotPassword(email, code);
 
-            if (verifyCode.isExpired || verifyCode.isValidCode) {
+            if (!verifyCode.isExistUser || !verifyCode.isNotExpired || !verifyCode.isValidCode) {
+                let message;
+                if (!verifyCode.isExistUser) message = "User is not exist!";
+                else if (!verifyCode.isNotExpired) message = "Code is expired!";
+                else if (!verifyCode.isValidCode) message = "Code is not correct!";
+
                 return res.status(400).json({
                     success: false,
-                    message: (verifyCode.isExpired) ? "Code is expired!" : "Code is not correct!"
+                    message: message
                 });
             }
 
@@ -131,6 +135,43 @@ class AuthController {
         }
     }
 
+    /**
+     * API đổi password khi người dùng quên mật khẩu
+     * @param req 
+     * @param res 
+     * @returns 
+     */
+    public async forgotPasswordResetPassword(req: Request, res: Response): Promise<Response> {
+        try {
+
+            const { email, code, newPassword, newPasswordConfirm } = req.body;
+
+            const resetPassword = await AuthService.resetPassword(email, code, newPassword, newPasswordConfirm);
+
+            if (!resetPassword.isExistUser || !resetPassword.isEqualCode || !resetPassword.isEqualPassword || !resetPassword.isChangedPassword) {
+                let message;
+                if (!resetPassword.isExistUser) message = "User is not exist!";
+                if (!resetPassword.isEqualCode) message = "Code to change password is not valid!"
+                if (!resetPassword.isEqualPassword) message = "Confirm password is not success!"
+                if (!resetPassword.isChangedPassword) message = "Change password has been faild, something was wrong. Please Try again!"
+
+                return res.status(400).json({
+                    success: false,
+                    message: message,
+                })
+            }
+
+            
+            return res.status(200).json({
+                success: true,
+                message: "Change password is success. Please Login again",
+            })
+
+        } catch (error) {
+            console.log();
+            return res.status(500).json({ message: "Server Error" });
+        }
+    }
 
 }
 

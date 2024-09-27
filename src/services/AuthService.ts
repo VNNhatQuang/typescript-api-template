@@ -35,7 +35,7 @@ class AuthService {
             }
 
             // Tạo token
-            const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY as string, { expiresIn: '3h' });
 
             return {
                 token: token,
@@ -107,27 +107,34 @@ class AuthService {
      * @param code 
      * @returns 
      */
-    public async verifyCodeForgotPassword(email: string, code: number): Promise<{ isValidCode: boolean, isExpired: boolean }> {
-        const data = {
+    public async verifyCodeForgotPassword(email: string, code: number): Promise<{ isExistUser: boolean, isValidCode: boolean, isNotExpired: boolean }> {
+        const data: { isExistUser: boolean, isValidCode: boolean, isNotExpired: boolean } = {
+            isExistUser: true,
             isValidCode: true,
-            isExpired: true,
+            isNotExpired: true,
         }
 
         try {
 
             const user = await UserService.getUserByEmail(email);
+            // Check email có tồn tại không
+            if (!user) {
+                data.isExistUser = false;
+                return data;
+            }
 
             const codeExpiredAt = new Date(`${user.codeExpiredAt}`);
             const now = new Date();
 
-
             // Check thời gian code đã hết hạn chưa
-            if (codeExpiredAt.getTime() > now.getTime()) {
-                data.isExpired = false;
+            if (codeExpiredAt.getTime() <= now.getTime()) {
+                data.isNotExpired = false;
+                return data;
             }
             // Check mã code có chính xác hay không
-            if (user.code == code) {
+            if (user.code != code) {
                 data.isValidCode = false;
+                return data;
             }
 
 
@@ -135,7 +142,69 @@ class AuthService {
 
         } catch (error) {
             console.log(error);
+            return {
+                isExistUser: false,
+                isValidCode: false,
+                isNotExpired: false,
+            };
+        }
+    }
+
+    /**
+     * Hàm đặt lại mật khẩu sau khi verify code thành công
+     * Coi code như là 1 token (không cần check expired time)
+     * @param email 
+     * @param code 
+     * @param newPassword 
+     * @param newPasswordConfirm 
+     * @returns 
+     */
+    public async resetPassword(email: string, code: number, newPassword: string, newPasswordConfirm: string): Promise<{ isExistUser: boolean, isEqualCode: boolean, isEqualPassword: boolean, isChangedPassword: boolean }> {
+        const data = {
+            isExistUser: true,
+            isEqualCode: true,
+            isEqualPassword: true,
+            isChangedPassword: true
+        }
+
+        try {
+
+            // Check
+            const user = await UserService.getUserByEmail(email);
+            if (!user) {
+                data.isExistUser = false;
+                return data;
+            }
+            if (user.code != code) {
+                data.isEqualCode = false;
+                return data;
+            }
+            if (newPassword !== newPasswordConfirm) {
+                data.isEqualPassword = false;
+                return data;
+            }
+
+            // Reset password
+            const userResetPassword = await UserService.update(
+                { password: newPassword },
+                { email: email }
+            )
+            if (!userResetPassword) {
+                data.isChangedPassword = false;
+                return data;
+            }
+
+
             return data;
+
+        } catch (error) {
+            console.log(error);
+            return {
+                isExistUser: false,
+                isEqualCode: false,
+                isEqualPassword: false,
+                isChangedPassword: false
+            };
         }
     }
 

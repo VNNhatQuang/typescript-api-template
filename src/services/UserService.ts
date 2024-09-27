@@ -11,7 +11,7 @@ class UserService {
      * @param userName 
      * @returns 
      */
-    public async get(userName: string): Promise<any> {
+    public async get(userName: string): Promise<User | null> {
         try {
 
             const user = await User.findOne({
@@ -32,7 +32,7 @@ class UserService {
      * @param email 
      * @returns 
      */
-    public async getUserByEmail(email: string): Promise<any> {
+    public async getUserByEmail(email: string): Promise<User | null> {
         try {
 
             const user = await User.findOne({
@@ -51,7 +51,7 @@ class UserService {
      * Hàm lấy danh sách toàn bộ user
      * @returns 
      */
-    public async getAll(): Promise<any> {
+    public async getAll(): Promise<User[]> {
         try {
 
             const users = await User.findAll({
@@ -70,9 +70,9 @@ class UserService {
      * Hàm update user
      * @param values Object các key của bảng user cần update
      * @param conditions Điều kiện update
-     * @returns 
+     * @returns Trả về số lượng record đã update
      */
-    public async update(values: UserInterface, conditions: UserInterface): Promise<any> {
+    public async update(values: UserInterface, conditions: UserInterface): Promise<[affectedCount: number] | null> {
         try {
 
             const rowsUpdated = await User.update(
