@@ -108,6 +108,17 @@ This template uses **Sequelize** with **MySQL** as the database. You can run mig
 Ensure you have set up your `.env` file correctly with your database credentials.
 
 
+## Use Docker
+- **Build**:  
+    ```sh
+    docker compose build
+    ```
+- **Run**:  
+    ```sh
+    docker compose up
+    ```
+
+
 ## API Documentation
 This template includes **Swagger** for API documentation. To access the documentation, start the server and navigate to:
 ```sh
