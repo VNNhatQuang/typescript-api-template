@@ -16,7 +16,7 @@ services:
     volumes:
       - .:/typescript_api_template
       - /typescript_api_template/node_modules
-    # restart: always
+    restart: always
   db:
     image: mysql:8.0
     container_name: mysql_db_typescript
@@ -29,7 +29,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./ddl/api_template_db.sql:/docker-entrypoint-initdb.d/api_template_db.sql
-    # restart: always
+    restart: always
 
 volumes:
   db_data:
