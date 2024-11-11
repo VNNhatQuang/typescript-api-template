@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: typescript_api
+    env_file: .env
+    environment:
+      - DB_HOST=mysql_db_typescript
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - db
+    volumes:
+      - .:/typescript_api_template
+      - /typescript_api_template/node_modules
+    # restart: always
+  db:
+    image: mysql:8.0
+    container_name: mysql_db_typescript
+    env_file: .env
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+      - MYSQL_DATABASE=${DB_NAME}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./ddl/api_template_db.sql:/docker-entrypoint-initdb.d/api_template_db.sql
+    # restart: always
+
+volumes:
+  db_data:
