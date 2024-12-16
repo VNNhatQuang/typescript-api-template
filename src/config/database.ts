@@ -8,17 +8,22 @@ class Database {
     private connection: Sequelize;
 
     public constructor() {
-        // console.log("Khởi tạo object Database");
-        this.connection = new Sequelize(
-            process.env.DB_NAME as string
-            , process.env.DB_USER as string
-            , process.env.DB_PASSWORD as string
-            , {
-                host: process.env.DB_HOST,
-                dialect: "mysql",
-                logging: false, // Turn off logging
-            }
-        )
+        // console.log("Khởi tạo object Database!");
+        try {
+            this.connection = new Sequelize(
+                process.env.DB_NAME as string
+                , process.env.DB_USER as string
+                , process.env.DB_PASSWORD as string
+                , {
+                    host: process.env.DB_HOST,
+                    dialect: "mysql",
+                    logging: false, // Turn off logging
+                }
+            );
+        } catch (error) {
+            console.error("Failed to initialize Sequelize instance:", error);
+            throw error;
+        }
     }
 
     /**
@@ -58,7 +63,7 @@ class Database {
             .catch(error => console.error("Error while closing the database connection:", error))
     }
 
-    
+
 }
 
 
