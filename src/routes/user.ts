@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import UserController from '../controllers/UserController';
-import VerifyToken from '../middleware/VerifyToken';
+import Authenticate from '../middleware/Authenticate';
 import Validate from '../middleware/Validate';
 
 const user: Router = express.Router();
@@ -49,7 +49,7 @@ const user: Router = express.Router();
  *                     format: date-time
  *                     description: When the user was last updated
  */
-user.get("/all", VerifyToken, UserController.showAll);
+user.get("/all", Authenticate, UserController.showAll);
 
 /** Lấy thông tin user dựa vào userName
  * @swagger
@@ -94,7 +94,7 @@ user.get("/all", VerifyToken, UserController.showAll);
  *                     format: date-time
  *                     description: When the user was last updated
  */
-user.get("/:userName", VerifyToken, UserController.show);
+user.get("/:userName", Authenticate, UserController.show);
 
 
 
