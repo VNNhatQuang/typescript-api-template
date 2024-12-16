@@ -1,6 +1,9 @@
 import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/database';
+import Database from '../config/database';
 import { UserInterface, UserCreationInterface } from '../interfaces/models/UserInterface';
+
+
+const connection = Database.getconnection();
 
 
 class User extends Model<UserInterface, UserCreationInterface> implements UserInterface {
@@ -66,7 +69,7 @@ User.init(
         }
     },
     {
-        sequelize: sequelize,
+        sequelize: connection,
         tableName: 'users',
     }
 );

@@ -1,7 +1,7 @@
 import express from "express";
 import Routes from "./routes";
 import { swaggerUi, specs } from "./config/swagger";
-import sequelize from "./config/database";
+import Database from "./config/database";
 import InitMiddleware from "./middleware";
 import NotFoundHandler from "./middleware/NotFoundHandler";
 
@@ -17,13 +17,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));  // Route Swagger
 Routes(app);
 app.use(NotFoundHandler);
 
-
 // Test connection to DB
-(async () => {
-    await sequelize.authenticate()
-        .then(() => console.log("Connection to Database successfully."))
-        .catch(error => console.log("Unable to connect to DB:", error))
-})()
+Database.testConnection();
 
 
 
