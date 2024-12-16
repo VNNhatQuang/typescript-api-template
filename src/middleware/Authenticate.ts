@@ -9,7 +9,7 @@ import { Request, Response, NextFunction } from "express";
  * @param next 
  * @returns 
  */
-const VerifyToken = (req: Request, res: Response, next: NextFunction): Response | void => {
+const Authenticate = (req: Request, res: Response, next: NextFunction): Response | void => {
     const token = req.headers["authorization"]?.split(" ")[1];
 
     if (!token) {
@@ -37,4 +37,4 @@ const VerifyToken = (req: Request, res: Response, next: NextFunction): Response 
 
 
 
-export default VerifyToken;
+export default Authenticate;
