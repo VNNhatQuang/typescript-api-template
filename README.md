@@ -23,6 +23,7 @@ To get started, clone this repository and install the dependencies:
 ```sh
 git clone https://github.com/VNNhatQuang/typescript-api-template.git    # Clone repository
 cd typescript_api_template                                              # Into project folder
+cp .env.example .env                                                    # Clone ".env.example" to ".env"
 npm install                                                             # Install dependencies
 ```
 
