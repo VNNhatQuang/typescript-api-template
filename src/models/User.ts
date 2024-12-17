@@ -2,7 +2,6 @@ import { DataTypes, Model } from 'sequelize';
 import Database from '../config/database';
 import { UserInterface, UserCreationInterface } from '../interfaces/models/UserInterface';
 
-
 const connection = Database.getconnection();
 
 
